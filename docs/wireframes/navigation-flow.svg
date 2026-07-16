@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="flow-title flow-desc">
+  <title id="flow-title">Excelerate Connect planned navigation flow</title>
+  <desc id="flow-desc">A low-fidelity grayscale flow diagram showing Login to Home to Program Listing to Program Details to Feedback Form, plus routes from Home to Events and Announcements and Profile, and return routes from Program Details to Program Listing and Profile to Home.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#444"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="720" fill="#fafafa"/>
+  <rect x="0.5" y="0.5" width="1279" height="719" fill="none" stroke="#333"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#222">
+    <text x="640" y="54" font-size="26" font-weight="700" text-anchor="middle">Planned Navigation Flow</text>
+    <text x="640" y="80" font-size="13" text-anchor="middle" fill="#666">LOW-FIDELITY PLANNING DIAGRAM</text>
+
+    <!-- Screen boxes -->
+    <g fill="#f2f2f2" stroke="#444" stroke-width="2">
+      <rect x="40" y="242" width="160" height="88" rx="5"/>
+      <rect x="260" y="242" width="160" height="88" rx="5"/>
+      <rect x="490" y="242" width="190" height="88" rx="5"/>
+      <rect x="750" y="242" width="190" height="88" rx="5"/>
+      <rect x="1010" y="242" width="220" height="88" rx="5"/>
+      <rect x="220" y="108" width="240" height="88" rx="5"/>
+      <rect x="260" y="442" width="160" height="88" rx="5"/>
+    </g>
+
+    <g font-size="17" font-weight="700" text-anchor="middle">
+      <text x="120" y="293">Login</text>
+      <text x="340" y="293">Home</text>
+      <text x="585" y="281">Program</text>
+      <text x="585" y="303">Listing</text>
+      <text x="845" y="281">Program</text>
+      <text x="845" y="303">Details</text>
+      <text x="1120" y="281">Feedback</text>
+      <text x="1120" y="303">Form</text>
+      <text x="340" y="147">Events and</text>
+      <text x="340" y="169">Announcements</text>
+      <text x="340" y="493">Profile</text>
+    </g>
+
+    <!-- Primary route: Login to Home to Program Listing to Program Details to Feedback Form -->
+    <g fill="none" stroke="#444" stroke-width="2.5" marker-end="url(#arrow)">
+      <line x1="200" y1="286" x2="260" y2="286"/>
+      <line x1="420" y1="286" x2="490" y2="286"/>
+      <line x1="680" y1="270" x2="750" y2="270"/>
+      <line x1="940" y1="286" x2="1010" y2="286"/>
+    </g>
+
+    <!-- Home to Events and Announcements -->
+    <path d="M340 242V196" fill="none" stroke="#444" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="350" y="222" font-size="12" fill="#666">Open</text>
+
+    <!-- Home to Profile and Profile back to Home -->
+    <path d="M305 330V442" fill="none" stroke="#444" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <path d="M375 442V330" fill="none" stroke="#444" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="287" y="388" font-size="12" fill="#666" text-anchor="end">Open</text>
+    <text x="393" y="388" font-size="12" fill="#666">Back</text>
+
+    <!-- Program Details back to Program Listing -->
+    <path d="M750 310H680" fill="none" stroke="#444" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="715" y="353" font-size="12" fill="#666" text-anchor="middle">Back</text>
+
+    <!-- Route annotations -->
+    <g font-size="11" fill="#777" text-anchor="middle">
+      <text x="230" y="272">Sign in</text>
+      <text x="455" y="272">Browse</text>
+      <text x="715" y="257">Select program</text>
+      <text x="975" y="272">Give feedback</text>
+    </g>
+
+    <rect x="365" y="610" width="550" height="50" rx="4" fill="#fff" stroke="#aaa"/>
+    <line x1="390" y1="635" x2="438" y2="635" stroke="#444" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="462" y="640" font-size="13">Arrow indicates a planned navigation route</text>
+  </g>
+</svg>

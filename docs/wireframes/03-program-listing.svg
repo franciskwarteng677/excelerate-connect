@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-labelledby="program-listing-title program-listing-desc">
+  <title id="program-listing-title">Excelerate Connect program listing low-fidelity wireframe</title>
+  <desc id="program-listing-desc">A grayscale mobile wireframe with a Programs page title, search and filter controls, three program cards, and bottom navigation.</desc>
+
+  <defs>
+    <style>
+      .screen { fill: #fafafa; stroke: #333333; stroke-width: 2; }
+      .surface { fill: #ffffff; stroke: #555555; stroke-width: 1.5; }
+      .muted { fill: #f2f2f2; stroke: #666666; stroke-width: 1.5; }
+      .line { stroke: #777777; stroke-width: 1.5; }
+      .text { fill: #222222; font-family: Arial, Helvetica, sans-serif; }
+      .title { font-size: 24px; font-weight: 700; }
+      .heading { font-size: 16px; font-weight: 700; }
+      .label { font-size: 13px; }
+      .small { font-size: 11px; }
+      .button-label { font-size: 12px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect class="screen" x="1" y="1" width="388" height="842" rx="24" />
+
+  <!-- Page heading and discovery controls -->
+  <text class="text title" x="20" y="49">Programs</text>
+  <rect class="surface" x="20" y="68" width="266" height="44" rx="8" />
+  <circle cx="39" cy="90" r="7" fill="none" stroke="#666666" stroke-width="1.5" />
+  <line class="line" x1="44" y1="95" x2="50" y2="101" />
+  <text class="text label" x="60" y="95" fill="#666666">Search programs</text>
+
+  <rect class="muted" x="298" y="68" width="72" height="44" rx="8" />
+  <line class="line" x1="312" y1="83" x2="324" y2="83" />
+  <line class="line" x1="312" y1="90" x2="324" y2="90" />
+  <line class="line" x1="312" y1="97" x2="324" y2="97" />
+  <text class="text small" x="330" y="94">Filter</text>
+
+  <!-- Program card 1 -->
+  <rect class="surface" x="20" y="130" width="350" height="184" rx="10" />
+  <rect class="muted" x="32" y="143" width="104" height="92" rx="5" />
+  <line class="line" x1="32" y1="143" x2="136" y2="235" />
+  <line class="line" x1="136" y1="143" x2="32" y2="235" />
+  <text class="text small" x="84" y="193" text-anchor="middle">IMAGE</text>
+  <text class="text heading" x="150" y="160">Program Title A</text>
+  <rect class="muted" x="150" y="172" width="92" height="24" rx="12" />
+  <text class="text small" x="196" y="188" text-anchor="middle">Category</text>
+  <text class="text label" x="150" y="219">Deadline: DD/MM/YYYY</text>
+  <rect class="muted" x="150" y="254" width="194" height="42" rx="7" />
+  <text class="text button-label" x="247" y="280" text-anchor="middle">VIEW DETAILS</text>
+
+  <!-- Program card 2 -->
+  <rect class="surface" x="20" y="326" width="350" height="184" rx="10" />
+  <rect class="muted" x="32" y="339" width="104" height="92" rx="5" />
+  <line class="line" x1="32" y1="339" x2="136" y2="431" />
+  <line class="line" x1="136" y1="339" x2="32" y2="431" />
+  <text class="text small" x="84" y="389" text-anchor="middle">IMAGE</text>
+  <text class="text heading" x="150" y="356">Program Title B</text>
+  <rect class="muted" x="150" y="368" width="92" height="24" rx="12" />
+  <text class="text small" x="196" y="384" text-anchor="middle">Category</text>
+  <text class="text label" x="150" y="415">Deadline: DD/MM/YYYY</text>
+  <rect class="muted" x="150" y="450" width="194" height="42" rx="7" />
+  <text class="text button-label" x="247" y="476" text-anchor="middle">VIEW DETAILS</text>
+
+  <!-- Program card 3 -->
+  <rect class="surface" x="20" y="522" width="350" height="184" rx="10" />
+  <rect class="muted" x="32" y="535" width="104" height="92" rx="5" />
+  <line class="line" x1="32" y1="535" x2="136" y2="627" />
+  <line class="line" x1="136" y1="535" x2="32" y2="627" />
+  <text class="text small" x="84" y="585" text-anchor="middle">IMAGE</text>
+  <text class="text heading" x="150" y="552">Program Title C</text>
+  <rect class="muted" x="150" y="564" width="92" height="24" rx="12" />
+  <text class="text small" x="196" y="580" text-anchor="middle">Category</text>
+  <text class="text label" x="150" y="611">Deadline: DD/MM/YYYY</text>
+  <rect class="muted" x="150" y="646" width="194" height="42" rx="7" />
+  <text class="text button-label" x="247" y="672" text-anchor="middle">VIEW DETAILS</text>
+
+  <!-- Bottom navigation -->
+  <rect class="surface" x="1" y="748" width="388" height="95" rx="0" />
+  <rect x="14" y="758" width="70" height="68" rx="8" fill="#ffffff" />
+  <rect class="muted" x="111" y="758" width="70" height="68" rx="8" />
+  <rect x="209" y="758" width="70" height="68" rx="8" fill="#ffffff" />
+  <rect x="306" y="758" width="70" height="68" rx="8" fill="#ffffff" />
+
+  <rect x="42" y="768" width="14" height="14" fill="none" stroke="#555555" stroke-width="1.5" />
+  <text class="text small" x="49" y="808" text-anchor="middle">Home</text>
+  <rect x="139" y="768" width="14" height="14" fill="#d9d9d9" stroke="#333333" stroke-width="1.5" />
+  <text class="text small" x="146" y="808" text-anchor="middle" font-weight="700">Programs</text>
+  <rect x="237" y="768" width="14" height="14" fill="none" stroke="#555555" stroke-width="1.5" />
+  <text class="text small" x="244" y="808" text-anchor="middle">Progress</text>
+  <circle cx="341" cy="775" r="7" fill="none" stroke="#555555" stroke-width="1.5" />
+  <text class="text small" x="341" y="808" text-anchor="middle">Profile</text>
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-labelledby="login-title login-desc">
+  <title id="login-title">Excelerate Connect low-fidelity login wireframe</title>
+  <desc id="login-desc">A grayscale mobile login screen with email and password fields, a login button, and links for password recovery and account creation.</desc>
+  <style>
+    .screen { fill: #fafafa; stroke: #333333; stroke-width: 2; }
+    .panel { fill: #ffffff; stroke: #555555; stroke-width: 1.5; }
+    .field { fill: #f2f2f2; stroke: #555555; stroke-width: 1.5; }
+    .button { fill: #3a3a3a; stroke: #222222; stroke-width: 1.5; }
+    .ink { fill: #222222; font-family: Arial, Helvetica, sans-serif; }
+    .muted { fill: #666666; font-family: Arial, Helvetica, sans-serif; }
+    .link { fill: #333333; font-family: Arial, Helvetica, sans-serif; text-decoration: underline; }
+    .button-label { fill: #ffffff; font-family: Arial, Helvetica, sans-serif; font-weight: 700; }
+  </style>
+
+  <rect class="screen" x="1" y="1" width="388" height="842" rx="22" />
+  <text class="muted" x="195" y="45" font-size="11" text-anchor="middle" letter-spacing="1.6">LOW-FIDELITY WIREFRAME</text>
+
+  <rect class="panel" x="24" y="104" width="342" height="636" rx="12" />
+  <rect class="field" x="159" y="145" width="72" height="72" rx="8" />
+  <line x1="175" y1="166" x2="215" y2="198" stroke="#777777" stroke-width="1.5" />
+  <line x1="215" y1="166" x2="175" y2="198" stroke="#777777" stroke-width="1.5" />
+  <text class="muted" x="195" y="230" font-size="10" text-anchor="middle">APP PLACEHOLDER</text>
+
+  <text class="ink" x="195" y="278" font-size="27" font-weight="700" text-anchor="middle">Excelerate Connect</text>
+  <text class="muted" x="195" y="305" font-size="13" text-anchor="middle">Learner sign in</text>
+
+  <text class="ink" x="49" y="360" font-size="13" font-weight="700">Email</text>
+  <rect class="field" x="48" y="374" width="294" height="52" rx="5" />
+  <text class="muted" x="64" y="405" font-size="13">learner@example.com</text>
+
+  <text class="ink" x="49" y="462" font-size="13" font-weight="700">Password</text>
+  <rect class="field" x="48" y="476" width="294" height="52" rx="5" />
+  <text class="muted" x="64" y="508" font-size="17" letter-spacing="3">••••••••</text>
+  <rect x="306" y="492" width="18" height="13" rx="6" fill="none" stroke="#777777" stroke-width="1.5" />
+  <circle cx="315" cy="498.5" r="2.5" fill="#777777" />
+
+  <text class="link" x="342" y="556" font-size="12" text-anchor="end">Forgot password?</text>
+
+  <rect class="button" x="48" y="584" width="294" height="54" rx="6" />
+  <text class="button-label" x="195" y="617" font-size="15" text-anchor="middle">LOGIN</text>
+
+  <line x1="48" y1="674" x2="342" y2="674" stroke="#cccccc" stroke-width="1" />
+  <text class="muted" x="139" y="708" font-size="13" text-anchor="end">New learner?</text>
+  <text class="link" x="148" y="708" font-size="13">Create account</text>
+
+  <text class="muted" x="195" y="795" font-size="11" text-anchor="middle">Week 1 planning concept • Screen not implemented</text>
+</svg>

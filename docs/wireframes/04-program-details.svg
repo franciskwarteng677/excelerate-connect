@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-labelledby="program-details-title program-details-desc">
+  <title id="program-details-title">Excelerate Connect program details low-fidelity wireframe</title>
+  <desc id="program-details-desc">A grayscale mobile wireframe with a back button, program image and details, About and Eligibility sections, and registration and feedback actions.</desc>
+
+  <defs>
+    <style>
+      .screen { fill: #fafafa; stroke: #333333; stroke-width: 2; }
+      .surface { fill: #ffffff; stroke: #555555; stroke-width: 1.5; }
+      .muted { fill: #f2f2f2; stroke: #666666; stroke-width: 1.5; }
+      .line { stroke: #777777; stroke-width: 1.5; }
+      .text { fill: #222222; font-family: Arial, Helvetica, sans-serif; }
+      .title { font-size: 23px; font-weight: 700; }
+      .heading { font-size: 17px; font-weight: 700; }
+      .label { font-size: 13px; }
+      .small { font-size: 11px; }
+      .button-label { font-size: 14px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect class="screen" x="1" y="1" width="388" height="842" rx="24" />
+
+  <!-- Header and return action -->
+  <rect class="surface" x="20" y="22" width="86" height="38" rx="7" />
+  <path d="M38 41 L46 33 M38 41 L46 49" fill="none" stroke="#444444" stroke-width="2" stroke-linecap="round" />
+  <text class="text label" x="58" y="46">Back</text>
+  <text class="text heading" x="126" y="46">Program Details</text>
+
+  <!-- Program image placeholder -->
+  <rect class="muted" x="20" y="78" width="350" height="184" rx="8" />
+  <line class="line" x1="20" y1="78" x2="370" y2="262" />
+  <line class="line" x1="370" y1="78" x2="20" y2="262" />
+  <text class="text label" x="195" y="174" text-anchor="middle">PROGRAM IMAGE PLACEHOLDER</text>
+
+  <!-- Program summary -->
+  <text class="text title" x="20" y="300">Program Title</text>
+  <rect class="muted" x="20" y="315" width="100" height="26" rx="13" />
+  <text class="text small" x="70" y="332" text-anchor="middle">Category</text>
+  <text class="text label" x="205" y="333">Deadline: DD/MM/YYYY</text>
+
+  <!-- About section -->
+  <text class="text heading" x="20" y="380">About</text>
+  <rect class="surface" x="20" y="395" width="350" height="92" rx="8" />
+  <text class="text label" x="34" y="420">Brief program description and key information</text>
+  <line class="line" x1="34" y1="438" x2="350" y2="438" />
+  <line class="line" x1="34" y1="455" x2="334" y2="455" />
+  <line class="line" x1="34" y1="472" x2="250" y2="472" />
+
+  <!-- Eligibility section -->
+  <text class="text heading" x="20" y="522">Eligibility</text>
+  <rect class="surface" x="20" y="537" width="350" height="105" rx="8" />
+  <rect x="34" y="557" width="9" height="9" fill="#f2f2f2" stroke="#666666" />
+  <text class="text label" x="54" y="566">Eligibility requirement placeholder</text>
+  <rect x="34" y="584" width="9" height="9" fill="#f2f2f2" stroke="#666666" />
+  <text class="text label" x="54" y="593">Eligibility requirement placeholder</text>
+  <rect x="34" y="611" width="9" height="9" fill="#f2f2f2" stroke="#666666" />
+  <text class="text label" x="54" y="620">Eligibility requirement placeholder</text>
+
+  <!-- Planned actions -->
+  <rect class="muted" x="20" y="680" width="350" height="52" rx="8" />
+  <text class="text button-label" x="195" y="711" text-anchor="middle">APPLY / REGISTER</text>
+  <rect class="surface" x="20" y="748" width="350" height="52" rx="8" />
+  <text class="text button-label" x="195" y="779" text-anchor="middle">GIVE FEEDBACK</text>
+</svg>

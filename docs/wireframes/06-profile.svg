@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-labelledby="profile-title profile-desc">
+  <title id="profile-title">Excelerate Connect low-fidelity learner profile wireframe</title>
+  <desc id="profile-desc">A grayscale mobile profile wireframe with an image placeholder, learner name and email, edit profile control, learning progress summary, saved programs, settings, logout, and bottom navigation.</desc>
+  <rect width="390" height="844" fill="#fafafa"/>
+  <rect x="0.5" y="0.5" width="389" height="843" rx="22" fill="none" stroke="#333"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#222">
+    <!-- Simple status area and header -->
+    <text x="22" y="22" font-size="11">9:41</text>
+    <rect x="330" y="13" width="14" height="7" rx="1" fill="none" stroke="#555"/>
+    <rect x="349" y="13" width="14" height="7" rx="1" fill="none" stroke="#555"/>
+    <rect x="0" y="32" width="390" height="58" fill="#f2f2f2" stroke="#555"/>
+    <text x="24" y="68" font-size="21" font-weight="700">Profile</text>
+
+    <!-- Learner identity -->
+    <circle cx="80" cy="150" r="42" fill="#e5e5e5" stroke="#555" stroke-width="1.5"/>
+    <circle cx="80" cy="137" r="13" fill="none" stroke="#777"/>
+    <path d="M54 176C57 157 103 157 106 176" fill="none" stroke="#777"/>
+    <text x="138" y="137" font-size="17" font-weight="700">[Learner Name]</text>
+    <text x="138" y="159" font-size="12" fill="#666">[learner@email.com]</text>
+    <rect x="138" y="174" width="112" height="34" rx="4" fill="#f2f2f2" stroke="#555"/>
+    <text x="194" y="196" font-size="12" text-anchor="middle">Edit Profile</text>
+
+    <!-- Learning progress summary -->
+    <text x="24" y="245" font-size="15" font-weight="700">Learning Progress</text>
+    <rect x="24" y="258" width="342" height="132" rx="5" fill="#f2f2f2" stroke="#555"/>
+    <text x="38" y="282" font-size="12">Overall progress summary</text>
+    <rect x="38" y="294" width="314" height="14" rx="7" fill="#fff" stroke="#777"/>
+    <rect x="40" y="296" width="122" height="10" rx="5" fill="#bdbdbd"/>
+    <rect x="38" y="324" width="146" height="50" rx="3" fill="#fff" stroke="#aaa"/>
+    <text x="111" y="345" font-size="10" text-anchor="middle" fill="#666">IN PROGRESS</text>
+    <text x="111" y="363" font-size="14" text-anchor="middle">— programs</text>
+    <rect x="206" y="324" width="146" height="50" rx="3" fill="#fff" stroke="#aaa"/>
+    <text x="279" y="345" font-size="10" text-anchor="middle" fill="#666">COMPLETED</text>
+    <text x="279" y="363" font-size="14" text-anchor="middle">— programs</text>
+
+    <!-- Profile actions -->
+    <rect x="24" y="414" width="342" height="62" rx="4" fill="#fff" stroke="#555"/>
+    <rect x="38" y="429" width="31" height="31" rx="3" fill="#f2f2f2" stroke="#777"/>
+    <path d="M45 438H62V463H45Z M48 442H59 M48 447H59" fill="none" stroke="#777"/>
+    <text x="84" y="451" font-size="14" font-weight="700">Saved Programs</text>
+    <text x="348" y="452" font-size="20" text-anchor="end">›</text>
+
+    <rect x="24" y="490" width="342" height="62" rx="4" fill="#fff" stroke="#555"/>
+    <rect x="38" y="505" width="31" height="31" rx="3" fill="#f2f2f2" stroke="#777"/>
+    <circle cx="53.5" cy="520.5" r="7" fill="none" stroke="#777"/>
+    <path d="M53.5 509V505 M53.5 536V532 M42 520.5H38 M69 520.5H65 M45.5 512.5L42.5 509.5 M64.5 531.5L61.5 528.5 M61.5 512.5L64.5 509.5 M42.5 531.5L45.5 528.5" stroke="#777"/>
+    <text x="84" y="527" font-size="14" font-weight="700">Settings</text>
+    <text x="348" y="528" font-size="20" text-anchor="end">›</text>
+
+    <rect x="24" y="580" width="342" height="50" rx="4" fill="#f2f2f2" stroke="#333" stroke-width="1.5"/>
+    <text x="195" y="611" font-size="14" font-weight="700" text-anchor="middle">Logout</text>
+
+    <!-- Bottom navigation -->
+    <rect x="0" y="754" width="390" height="90" fill="#f2f2f2" stroke="#555"/>
+    <g text-anchor="middle" font-size="10">
+      <path d="M38 783L51 772L64 783V799H43V785Z" fill="none" stroke="#555" stroke-width="1.5"/>
+      <text x="51" y="819">Home</text>
+      <rect x="129" y="775" width="22" height="22" fill="none" stroke="#555"/>
+      <line x1="133" y1="781" x2="147" y2="781" stroke="#777"/>
+      <line x1="133" y1="787" x2="147" y2="787" stroke="#777"/>
+      <text x="140" y="819">Programs</text>
+      <rect x="224" y="787" width="5" height="11" fill="#aaa"/>
+      <rect x="232" y="780" width="5" height="18" fill="#888"/>
+      <rect x="240" y="773" width="5" height="25" fill="#666"/>
+      <text x="234" y="819">Progress</text>
+      <circle cx="328" cy="781" r="7" fill="none" stroke="#333" stroke-width="1.5"/>
+      <path d="M315 800C317 788 339 788 341 800" fill="none" stroke="#333" stroke-width="1.5"/>
+      <text x="328" y="819" font-weight="700">Profile</text>
+      <line x1="303" y1="827" x2="353" y2="827" stroke="#333" stroke-width="2"/>
+    </g>
+  </g>
+</svg>
