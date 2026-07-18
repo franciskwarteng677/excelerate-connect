@@ -2,7 +2,7 @@
 
 Excelerate Connect is a planned Flutter mobile application intended to help Excelerate learners discover programs and events, view program information and announcements, track learning progress, manage their profiles, and submit feedback. Future administrator capabilities are planned to support the management of programs, learner participation, announcements, and feedback.
 
-> **Project status:** Week 1 planning and setup. The application features described in this document are planned and have not yet been implemented.
+> **Project status:** Week 2 development in progress. Stage 1 implements the application foundation plus Login and Home UI prototypes; the remaining application features are still planned and have not yet been implemented.
 
 ## Problem Being Addressed
 
@@ -56,7 +56,15 @@ excelerate_connect/
 │   ├── APP_PROPOSAL.md   # Week 1 application proposal
 │   └── WIREFRAMES.md     # Wireframe descriptions and navigation flow
 ├── lib/
-│   └── main.dart         # Unmodified default Flutter sample application
+│   ├── screens/
+│   │   ├── home_screen.dart
+│   │   └── login_screen.dart
+│   ├── theme/
+│   │   └── app_theme.dart
+│   ├── widgets/
+│   │   ├── primary_button.dart
+│   │   └── section_header.dart
+│   └── main.dart         # Application entry point and named routes
 ├── test/                 # Flutter-generated test files
 ├── web/                  # Flutter-generated web platform files
 ├── analysis_options.yaml # Dart static-analysis configuration
@@ -99,14 +107,14 @@ Generated folders such as `build/` and `.dart_tool/` may also appear locally aft
 
 ## Run the Flutter Project in Chrome
 
-From the project root, confirm that Chrome is detected and start the current default sample application:
+From the project root, confirm that Chrome is detected and start the current Stage 1 UI prototype:
 
 ```bash
 flutter devices
 flutter run -d chrome
 ```
 
-The current build is the default Flutter sample app used to verify the development environment. Excelerate Connect screens have not yet been built.
+The current build starts on the Login UI prototype and navigates to the Home UI prototype after valid local form input. It does not provide real authentication, live data, or backend integration.
 
 ## Wireframes
 
@@ -124,7 +132,7 @@ The [navigation flow diagram](docs/wireframes/navigation-flow.svg) records the p
 ## Development Roadmap
 
 - **Week 1:** Environment setup, application proposal, wireframes, and GitHub preparation
-- **Week 2:** Planned program listing and program details screens
+- **Week 2:** Staged UI prototype development—foundation, Login, Home, Program Listing, and Program Details
 - **Week 3:** Planned additional functionality and integration
 - **Week 4:** Planned testing, refinement, and final submission
 
@@ -138,7 +146,12 @@ The roadmap is a plan and may be adjusted as requirements are refined.
 - [x] Application requirements studied
 - [x] Week 1 application proposal prepared
 - [x] Low-fidelity wireframes completed and added
-- [ ] Excelerate Connect application screens implemented
+- [x] Stage 1 application foundation and global theme implemented
+- [x] Stage 1 Login UI prototype with local validation implemented
+- [x] Stage 1 Home UI prototype with static sample content implemented
+- [ ] Week 2 four-screen prototype completed
+- [ ] Program Listing and Program Details implemented
+- [ ] Remaining planned Excelerate Connect screens implemented
 - [ ] Additional functionality integrated
 - [ ] Testing and final refinement completed
 

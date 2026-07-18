@@ -1,30 +1,120 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:excelerate_connect/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  Future<void> pumpApp(WidgetTester tester) {
+    return tester.pumpWidget(const ExcelerateConnectApp());
+  }
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  Future<void> signIn(WidgetTester tester) async {
+    await pumpApp(tester);
+    await tester.enterText(
+      find.byKey(const ValueKey('loginEmailField')),
+      'learner@example.com',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey('loginPasswordField')),
+      'prototype-password',
+    );
+    await tester.tap(find.byKey(const ValueKey('loginSubmitButton')));
+    await tester.pumpAndSettle();
+  }
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('starts on the learner login screen', (tester) async {
+    await pumpApp(tester);
+
+    expect(find.byKey(const ValueKey('loginScreen')), findsOneWidget);
+    expect(find.text('Excelerate Connect'), findsOneWidget);
+    expect(find.byKey(const ValueKey('loginEmailField')), findsOneWidget);
+    expect(find.byKey(const ValueKey('loginPasswordField')), findsOneWidget);
+    expect(find.text('Forgot password?'), findsOneWidget);
+    expect(find.text('Create account'), findsOneWidget);
+  });
+
+  testWidgets('shows required errors for an empty login form', (tester) async {
+    await pumpApp(tester);
+
+    await tester.tap(find.byKey(const ValueKey('loginSubmitButton')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Enter your email address.'), findsOneWidget);
+    expect(find.text('Enter your password.'), findsOneWidget);
+    expect(
+      find.text('Please correct the highlighted fields and try again.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('loginScreen')), findsOneWidget);
+  });
+
+  testWidgets('rejects a malformed email address', (tester) async {
+    await pumpApp(tester);
+    await tester.enterText(
+      find.byKey(const ValueKey('loginEmailField')),
+      'not-an-email',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey('loginPasswordField')),
+      'prototype-password',
+    );
+
+    await tester.tap(find.byKey(const ValueKey('loginSubmitButton')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Enter a valid email address.'), findsOneWidget);
+    expect(find.byKey(const ValueKey('loginScreen')), findsOneWidget);
+  });
+
+  testWidgets('password visibility can be toggled', (tester) async {
+    await pumpApp(tester);
+    final field = find.byKey(const ValueKey('loginPasswordField'));
+
+    EditableText editableText() {
+      return tester.widget<EditableText>(
+        find.descendant(of: field, matching: find.byType(EditableText)),
+      );
+    }
+
+    expect(editableText().obscureText, isTrue);
+    await tester.tap(find.byKey(const ValueKey('loginPasswordVisibility')));
     await tester.pump();
+    expect(editableText().obscureText, isFalse);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('valid local input replaces Login with Home', (tester) async {
+    await signIn(tester);
+
+    expect(find.byKey(const ValueKey('homeScreen')), findsOneWidget);
+    expect(find.byKey(const ValueKey('loginScreen')), findsNothing);
+    expect(find.text('Featured Programs'), findsOneWidget);
+    expect(find.text('Flutter Foundations'), findsOneWidget);
+    expect(find.text('Career Readiness Sprint'), findsOneWidget);
+    expect(find.text('Upcoming Events'), findsOneWidget);
+    expect(find.text('Recent Announcement'), findsOneWidget);
+    expect(find.text('Quick Links'), findsOneWidget);
+    expect(find.byType(NavigationBar), findsOneWidget);
+
+    final navigator = tester.state<NavigatorState>(
+      find.byType(Navigator).first,
+    );
+    expect(navigator.canPop(), isFalse);
+  });
+
+  testWidgets('Programs remains a next-stage placeholder', (tester) async {
+    await signIn(tester);
+
+    await tester.tap(find.byKey(const ValueKey('bottomProgramsDestination')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Program Listing will be completed in the next stage.'),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('homeScreen')), findsOneWidget);
+    expect(
+      tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex,
+      0,
+    );
   });
 }
