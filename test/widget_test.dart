@@ -101,20 +101,23 @@ void main() {
     expect(navigator.canPop(), isFalse);
   });
 
-  testWidgets('Programs remains a next-stage placeholder', (tester) async {
+  testWidgets('Programs bottom destination opens Program Listing', (
+    tester,
+  ) async {
     await signIn(tester);
 
     await tester.tap(find.byKey(const ValueKey('bottomProgramsDestination')));
     await tester.pumpAndSettle();
 
+    expect(find.byKey(const ValueKey('programListingScreen')), findsOneWidget);
+    expect(find.byKey(const ValueKey('homeScreen')), findsNothing);
     expect(
-      find.text('Program Listing will be completed in the next stage.'),
+      find.descendant(of: find.byType(AppBar), matching: find.text('Programs')),
       findsOneWidget,
     );
-    expect(find.byKey(const ValueKey('homeScreen')), findsOneWidget);
     expect(
       tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex,
-      0,
+      1,
     );
   });
 }

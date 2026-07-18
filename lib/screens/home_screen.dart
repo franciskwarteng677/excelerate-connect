@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../data/sample_programs.dart';
+import '../models/program.dart';
+import '../widgets/app_bottom_navigation_bar.dart';
+import '../widgets/program_card.dart';
 import '../widgets/section_header.dart';
+import 'program_details_screen.dart';
+import 'program_listing_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static const routeName = '/home';
-
-  static const _programs = [
-    _ProgramPreview(
-      title: 'Flutter Foundations',
-      category: 'Mobile Development',
-      deadline: 'Sample deadline: 30 August',
-      icon: Icons.phone_android_outlined,
-    ),
-    _ProgramPreview(
-      title: 'Career Readiness Sprint',
-      category: 'Professional Skills',
-      deadline: 'Sample deadline: 15 September',
-      icon: Icons.work_outline,
-    ),
-  ];
 
   void _message(BuildContext context, String text) {
     final messenger = ScaffoldMessenger.of(context);
@@ -29,13 +20,31 @@ class HomeScreen extends StatelessWidget {
       ..showSnackBar(SnackBar(content: Text(text)));
   }
 
+  void _openPrograms(BuildContext context) {
+    Navigator.of(context).pushNamed(ProgramListingScreen.routeName);
+  }
+
+  void _openDetails(BuildContext context, Program program) {
+    Navigator.of(context).pushNamed(
+      ProgramDetailsScreen.routeName,
+      arguments: ProgramDetailsArguments(program: program),
+    );
+  }
+
   void _selectDestination(BuildContext context, int index) {
-    const messages = {
-      1: 'Program Listing will be completed in the next stage.',
-      2: 'Learning Progress is planned for a later stage.',
-      3: 'The learner Profile is planned for a later stage.',
-    };
-    if (messages[index] case final message?) _message(context, message);
+    switch (index) {
+      case 0:
+        return;
+      case 1:
+        _openPrograms(context);
+        return;
+      case 2:
+        _message(context, 'Learning Progress is planned for a later stage.');
+        return;
+      case 3:
+        _message(context, 'The learner Profile is planned for a later stage.');
+        return;
+    }
   }
 
   @override
@@ -85,24 +94,12 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     const _WelcomeBanner(),
                     const SizedBox(height: 24),
-                    TextField(
-                      key: const ValueKey('homeSearchField'),
-                      readOnly: true,
-                      onTap: () => _message(
-                        context,
-                        'Program and event search is planned for a later stage.',
-                      ),
-                      decoration: const InputDecoration(
-                        hintText: 'Search programs and events',
-                        prefixIcon: Icon(Icons.search_rounded),
-                        suffixIcon: Icon(Icons.tune_rounded),
-                      ),
-                    ),
+                    _ProgramSearchAction(onTap: () => _openPrograms(context)),
                     const SizedBox(height: 28),
                     SectionHeader(
                       title: 'Featured Programs',
                       actionLabel: 'View all',
-                      onAction: () => _selectDestination(context, 1),
+                      onAction: () => _openPrograms(context),
                     ),
                     const SizedBox(height: 12),
                     LayoutBuilder(
@@ -115,15 +112,13 @@ class HomeScreen extends StatelessWidget {
                           spacing: gap,
                           runSpacing: gap,
                           children: [
-                            for (final program in _programs)
+                            for (final program in samplePrograms.take(2))
                               SizedBox(
                                 width: width,
-                                child: _ProgramCard(
+                                child: ProgramCard(
                                   program: program,
-                                  onDetails: () => _message(
-                                    context,
-                                    'Program details are planned for a later stage.',
-                                  ),
+                                  onViewDetails: () =>
+                                      _openDetails(context, program),
                                 ),
                               ),
                           ],
@@ -162,7 +157,7 @@ class HomeScreen extends StatelessWidget {
                                 icon: Icons.view_list_outlined,
                                 label: 'Programs',
                                 detail: 'Browse learning opportunities',
-                                onTap: () => _selectDestination(context, 1),
+                                onTap: () => _openPrograms(context),
                               ),
                             ),
                             SizedBox(
@@ -194,29 +189,9 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: AppBottomNavigationBar(
         selectedIndex: 0,
         onDestinationSelected: (index) => _selectDestination(context, index),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            key: ValueKey('bottomProgramsDestination'),
-            icon: Icon(Icons.view_list_outlined),
-            label: 'Programs',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.bar_chart_outlined),
-            label: 'Progress',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline_rounded),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }
@@ -280,45 +255,54 @@ class _WelcomeBanner extends StatelessWidget {
   }
 }
 
-class _ProgramCard extends StatelessWidget {
-  const _ProgramCard({required this.program, required this.onDetails});
+class _ProgramSearchAction extends StatelessWidget {
+  const _ProgramSearchAction({required this.onTap});
 
-  final _ProgramPreview program;
-  final VoidCallback onDetails;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: 112,
-              decoration: BoxDecoration(
-                color: colors.primaryContainer,
-                borderRadius: BorderRadius.circular(14),
+    return Semantics(
+      button: true,
+      label: 'Search sample programs; opens Programs',
+      onTap: onTap,
+      child: ExcludeSemantics(
+        child: Material(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(color: colors.outlineVariant),
+          ),
+          child: InkWell(
+            key: const ValueKey('homeSearchField'),
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(14),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 58),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                child: Row(
+                  children: [
+                    Icon(Icons.search_rounded, color: colors.onSurfaceVariant),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Text(
+                        'Search sample programs',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: colors.onSurfaceVariant,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ],
+                ),
               ),
-              child: Icon(program.icon, color: colors.primary, size: 44),
             ),
-            const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Chip(label: Text(program.category)),
-            ),
-            const SizedBox(height: 8),
-            Text(program.title, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 6),
-            Text(program.deadline),
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              onPressed: onDetails,
-              icon: const Icon(Icons.arrow_forward_rounded),
-              label: const Text('View details'),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -413,7 +397,7 @@ class _AnnouncementCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Welcome to the Stage 1 prototype',
+                    'Welcome to the Week 2 prototype',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 6),
@@ -478,18 +462,4 @@ class _QuickLink extends StatelessWidget {
       ),
     );
   }
-}
-
-class _ProgramPreview {
-  const _ProgramPreview({
-    required this.title,
-    required this.category,
-    required this.deadline,
-    required this.icon,
-  });
-
-  final String title;
-  final String category;
-  final String deadline;
-  final IconData icon;
 }
