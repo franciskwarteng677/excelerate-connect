@@ -4,6 +4,8 @@ import '../models/program.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/program_artwork.dart';
 import '../widgets/section_header.dart';
+import 'feedback_form_screen.dart';
+import 'registration_form_screen.dart';
 
 class ProgramDetailsArguments {
   const ProgramDetailsArguments({required this.program});
@@ -18,11 +20,18 @@ class ProgramDetailsScreen extends StatelessWidget {
 
   final Program program;
 
-  void _message(BuildContext context, String text) {
-    final messenger = ScaffoldMessenger.of(context);
-    messenger
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(text)));
+  void _openRegistration(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      RegistrationFormScreen.routeName,
+      arguments: RegistrationFormArguments(program: program),
+    );
+  }
+
+  void _openFeedback(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      FeedbackFormScreen.routeName,
+      arguments: FeedbackFormArguments(program: program),
+    );
   }
 
   @override
@@ -101,23 +110,15 @@ class ProgramDetailsScreen extends StatelessWidget {
                         final applyButton = PrimaryButton(
                           key: const ValueKey('programApplyButton'),
                           label: 'Apply or register',
-                          onPressed: () => _message(
-                            context,
-                            'Application and registration are not connected '
-                            'in this prototype.',
-                          ),
+                          onPressed: () => _openRegistration(context),
                         );
                         final feedbackButton = SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
                             key: const ValueKey('programFeedbackButton'),
-                            onPressed: () => _message(
-                              context,
-                              'The Feedback Screen is planned for a later '
-                              'stage. No feedback was submitted.',
-                            ),
+                            onPressed: () => _openFeedback(context),
                             icon: const Icon(Icons.rate_review_outlined),
-                            label: const Text('Give feedback (prototype)'),
+                            label: const Text('Give feedback'),
                           ),
                         );
 
@@ -347,8 +348,9 @@ class _PrototypeNotice extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'This prototype does not connect to an application, registration, '
-              'feedback, or enrollment service.',
+              'Registration and feedback use validated local forms with '
+              'simulated submissions. Nothing is sent to a server or saved '
+              'persistently.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: colors.onSecondaryContainer,
                 fontWeight: FontWeight.w600,

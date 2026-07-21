@@ -186,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                                 Text(
-                                  'Stage 1 UI prototype • No real authentication',
+                                  'Local UI prototype • No real authentication',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),

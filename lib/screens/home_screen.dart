@@ -1,17 +1,68 @@
 import 'package:flutter/material.dart';
 
-import '../data/sample_programs.dart';
 import '../models/program.dart';
+import '../services/program_repository.dart';
 import '../widgets/app_bottom_navigation_bar.dart';
+import '../widgets/async_state_card.dart';
 import '../widgets/program_card.dart';
 import '../widgets/section_header.dart';
 import 'program_details_screen.dart';
 import 'program_listing_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({required this.programRepository, super.key});
 
   static const routeName = '/home';
+
+  final ProgramRepository programRepository;
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Program>? _programs;
+  Object? _programLoadError;
+  bool _programsLoading = true;
+  int _loadGeneration = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrograms();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.programRepository != widget.programRepository) {
+      _loadPrograms();
+    }
+  }
+
+  Future<void> _loadPrograms() async {
+    final generation = ++_loadGeneration;
+    setState(() {
+      _programsLoading = true;
+      _programLoadError = null;
+    });
+
+    try {
+      final programs = await widget.programRepository.loadPrograms();
+      if (!mounted || generation != _loadGeneration) return;
+      setState(() {
+        _programs = programs;
+        _programsLoading = false;
+      });
+    } catch (error) {
+      if (!mounted || generation != _loadGeneration) return;
+      setState(() {
+        _programs = null;
+        _programLoadError = error;
+        _programsLoading = false;
+      });
+    }
+  }
 
   void _message(BuildContext context, String text) {
     final messenger = ScaffoldMessenger.of(context);
@@ -102,29 +153,57 @@ class HomeScreen extends StatelessWidget {
                       onAction: () => _openPrograms(context),
                     ),
                     const SizedBox(height: 12),
-                    LayoutBuilder(
-                      builder: (context, box) {
-                        const gap = 16.0;
-                        final width = box.maxWidth >= 720
-                            ? (box.maxWidth - gap) / 2
-                            : box.maxWidth;
-                        return Wrap(
-                          spacing: gap,
-                          runSpacing: gap,
-                          children: [
-                            for (final program in samplePrograms.take(2))
-                              SizedBox(
-                                width: width,
-                                child: ProgramCard(
-                                  program: program,
-                                  onViewDetails: () =>
-                                      _openDetails(context, program),
+                    if (_programsLoading)
+                      const AsyncLoadingState(
+                        key: ValueKey('homeProgramsLoadingState'),
+                        message: 'Loading featured programs…',
+                        compact: true,
+                      )
+                    else if (_programLoadError != null)
+                      AsyncErrorCard(
+                        key: const ValueKey('homeProgramsErrorState'),
+                        retryButtonKey: const ValueKey(
+                          'homeProgramsRetryButton',
+                        ),
+                        title: 'Featured programs unavailable',
+                        message:
+                            'The local program file could not be loaded. '
+                            'You can retry without leaving Home.',
+                        onRetry: _loadPrograms,
+                        compact: true,
+                      )
+                    else if (_programs!.isEmpty)
+                      const AsyncEmptyCard(
+                        key: ValueKey('homeProgramsEmptyState'),
+                        title: 'No featured programs',
+                        message:
+                            'The local program file currently contains no '
+                            'programs to feature.',
+                      )
+                    else
+                      LayoutBuilder(
+                        builder: (context, box) {
+                          const gap = 16.0;
+                          final width = box.maxWidth >= 720
+                              ? (box.maxWidth - gap) / 2
+                              : box.maxWidth;
+                          return Wrap(
+                            spacing: gap,
+                            runSpacing: gap,
+                            children: [
+                              for (final program in _programs!.take(2))
+                                SizedBox(
+                                  width: width,
+                                  child: ProgramCard(
+                                    program: program,
+                                    onViewDetails: () =>
+                                        _openDetails(context, program),
+                                  ),
                                 ),
-                              ),
-                          ],
-                        );
-                      },
-                    ),
+                            ],
+                          );
+                        },
+                      ),
                     const SizedBox(height: 32),
                     const SectionHeader(title: 'Upcoming Events'),
                     const SizedBox(height: 12),
@@ -397,12 +476,14 @@ class _AnnouncementCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Welcome to the Week 2 prototype',
+                    'Welcome to the local learner prototype',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'This is sample content for the planned learner dashboard. Live announcements are not connected yet.',
+                    'Programs are loaded from bundled sample data. Events and '
+                    'announcements remain static, and live services are not '
+                    'connected.',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],

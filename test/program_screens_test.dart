@@ -1,11 +1,29 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:excelerate_connect/data/sample_programs.dart';
 import 'package:excelerate_connect/main.dart';
+import 'package:excelerate_connect/models/program.dart';
+import 'package:excelerate_connect/screens/program_listing_screen.dart';
+import 'package:excelerate_connect/services/program_repository.dart';
+import 'package:excelerate_connect/theme/app_theme.dart';
+
+import 'support/fake_program_repository.dart';
 
 void main() {
-  Future<void> signIn(WidgetTester tester) async {
-    await tester.pumpWidget(const ExcelerateConnectApp());
+  Future<void> signIn(
+    WidgetTester tester, {
+    ProgramRepository? programRepository,
+  }) async {
+    await tester.pumpWidget(
+      ExcelerateConnectApp(
+        programRepository:
+            programRepository ??
+            FakeProgramRepository.immediate(samplePrograms),
+      ),
+    );
     await tester.enterText(
       find.byKey(const ValueKey('loginEmailField')),
       'learner@example.com',
@@ -18,10 +36,25 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Future<void> openPrograms(WidgetTester tester) async {
-    await signIn(tester);
+  Future<void> openPrograms(
+    WidgetTester tester, {
+    ProgramRepository? programRepository,
+  }) async {
+    await signIn(tester, programRepository: programRepository);
     await tester.tap(find.byKey(const ValueKey('bottomProgramsDestination')));
     await tester.pumpAndSettle();
+  }
+
+  Future<void> pumpListing(
+    WidgetTester tester,
+    ProgramRepository programRepository,
+  ) {
+    return tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: ProgramListingScreen(programRepository: programRepository),
+      ),
+    );
   }
 
   EditableText searchInput(WidgetTester tester) {
@@ -32,6 +65,69 @@ void main() {
       ),
     );
   }
+
+  testWidgets('Program Listing shows loading before successful data', (
+    tester,
+  ) async {
+    final completer = Completer<List<Program>>();
+    final repository = FakeProgramRepository(() => completer.future);
+
+    await pumpListing(tester, repository);
+    await tester.pump();
+
+    expect(find.byKey(const ValueKey('programLoadingState')), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    completer.complete(samplePrograms);
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('programLoadingState')), findsNothing);
+    expect(find.text('4 sample programs'), findsOneWidget);
+  });
+
+  testWidgets('Program Listing reports a source-empty catalogue', (
+    tester,
+  ) async {
+    await pumpListing(
+      tester,
+      FakeProgramRepository.immediate(const <Program>[]),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey('programSourceEmptyState')),
+      findsOneWidget,
+    );
+    expect(find.text('No programs available'), findsOneWidget);
+    expect(find.text('0 sample programs'), findsOneWidget);
+  });
+
+  testWidgets('Program Listing error state retries and recovers', (
+    tester,
+  ) async {
+    var attempts = 0;
+    final repository = FakeProgramRepository(() async {
+      attempts++;
+      if (attempts == 1) {
+        throw StateError('Simulated local asset failure');
+      }
+      return samplePrograms;
+    });
+
+    await pumpListing(tester, repository);
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('programLoadErrorState')), findsOneWidget);
+    expect(find.text('Unable to load programs'), findsOneWidget);
+    expect(attempts, 1);
+
+    await tester.tap(find.byKey(const ValueKey('programLoadRetryButton')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('programLoadErrorState')), findsNothing);
+    expect(find.text('4 sample programs'), findsOneWidget);
+    expect(attempts, 2);
+  });
 
   testWidgets('Program Listing renders the local sample programs', (
     tester,
@@ -260,7 +356,7 @@ void main() {
     );
   });
 
-  testWidgets('program actions report their prototype limitations', (
+  testWidgets('program actions open selected local prototype forms', (
     tester,
   ) async {
     await openPrograms(tester);
@@ -280,13 +376,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.text(
-        'Application and registration are not connected in this prototype.',
-      ),
+      find.byKey(const ValueKey('registrationFormScreen')),
       findsOneWidget,
     );
+    expect(find.text('Flutter Foundations'), findsOneWidget);
+    expect(find.textContaining('no registration service'), findsOneWidget);
 
-    await tester.pump(const Duration(seconds: 5));
+    await tester.tap(find.byKey(const ValueKey('registrationBackButton')));
     await tester.pumpAndSettle();
 
     final feedbackButton = find.byKey(const ValueKey('programFeedbackButton'));
@@ -295,13 +391,9 @@ void main() {
     await tester.tap(feedbackButton);
     await tester.pumpAndSettle();
 
-    expect(
-      find.text(
-        'The Feedback Screen is planned for a later stage. '
-        'No feedback was submitted.',
-      ),
-      findsOneWidget,
-    );
+    expect(find.byKey(const ValueKey('feedbackFormScreen')), findsOneWidget);
+    expect(find.text('Flutter Foundations'), findsOneWidget);
+    expect(find.textContaining('no feedback service'), findsOneWidget);
   });
 
   testWidgets('Home search opens Programs and bottom Home returns Home', (

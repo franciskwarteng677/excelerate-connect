@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:excelerate_connect/data/sample_programs.dart';
 import 'package:excelerate_connect/main.dart';
+
+import 'support/fake_program_repository.dart';
 
 void main() {
   Future<void> pumpApp(WidgetTester tester) {
-    return tester.pumpWidget(const ExcelerateConnectApp());
+    return tester.pumpWidget(
+      ExcelerateConnectApp(
+        programRepository: FakeProgramRepository.immediate(samplePrograms),
+      ),
+    );
   }
 
   Future<void> signIn(WidgetTester tester) async {

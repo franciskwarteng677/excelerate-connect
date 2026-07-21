@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
+import 'screens/feedback_form_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/program_details_screen.dart';
 import 'screens/program_listing_screen.dart';
+import 'screens/registration_form_screen.dart';
+import 'services/program_repository.dart';
 import 'theme/app_theme.dart';
 
-void main() => runApp(const ExcelerateConnectApp());
+void main() => runApp(ExcelerateConnectApp());
 
 class ExcelerateConnectApp extends StatelessWidget {
-  const ExcelerateConnectApp({super.key});
+  ExcelerateConnectApp({ProgramRepository? programRepository, super.key})
+    : programRepository = programRepository ?? AssetProgramRepository();
+
+  final ProgramRepository programRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -20,27 +26,51 @@ class ExcelerateConnectApp extends StatelessWidget {
       initialRoute: LoginScreen.routeName,
       routes: {
         LoginScreen.routeName: (_) => const LoginScreen(),
-        HomeScreen.routeName: (_) => const HomeScreen(),
-        ProgramListingScreen.routeName: (_) => const ProgramListingScreen(),
+        HomeScreen.routeName: (_) =>
+            HomeScreen(programRepository: programRepository),
+        ProgramListingScreen.routeName: (_) =>
+            ProgramListingScreen(programRepository: programRepository),
       },
       onGenerateRoute: _generateRoute,
     );
   }
 
   Route<void>? _generateRoute(RouteSettings settings) {
-    if (settings.name != ProgramDetailsScreen.routeName) return null;
-
     final arguments = settings.arguments;
-    if (arguments is! ProgramDetailsArguments) {
-      return MaterialPageRoute<void>(
-        settings: settings,
-        builder: (_) => const _ProgramUnavailableScreen(),
-      );
+    switch (settings.name) {
+      case ProgramDetailsScreen.routeName:
+        if (arguments is ProgramDetailsArguments) {
+          return MaterialPageRoute<void>(
+            settings: settings,
+            builder: (_) => ProgramDetailsScreen(program: arguments.program),
+          );
+        }
+        return _unavailableRoute(settings);
+      case RegistrationFormScreen.routeName:
+        if (arguments is RegistrationFormArguments) {
+          return MaterialPageRoute<void>(
+            settings: settings,
+            builder: (_) => RegistrationFormScreen(program: arguments.program),
+          );
+        }
+        return _unavailableRoute(settings);
+      case FeedbackFormScreen.routeName:
+        if (arguments is FeedbackFormArguments) {
+          return MaterialPageRoute<void>(
+            settings: settings,
+            builder: (_) => FeedbackFormScreen(program: arguments.program),
+          );
+        }
+        return _unavailableRoute(settings);
+      default:
+        return null;
     }
+  }
 
+  Route<void> _unavailableRoute(RouteSettings settings) {
     return MaterialPageRoute<void>(
       settings: settings,
-      builder: (_) => ProgramDetailsScreen(program: arguments.program),
+      builder: (_) => const _ProgramUnavailableScreen(),
     );
   }
 }
