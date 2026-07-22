@@ -74,7 +74,7 @@ class _ProgramListingScreenState extends State<ProgramListingScreen> {
   }
 
   bool get _hasActiveFilters =>
-      _query.isNotEmpty || _selectedCategory != _allCategories;
+      _query.trim().isNotEmpty || _selectedCategory != _allCategories;
 
   Future<void> _loadPrograms() async {
     final generation = ++_loadGeneration;

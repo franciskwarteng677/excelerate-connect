@@ -1,12 +1,11 @@
 {
-    "name": "excelerate_connect",
-    "short_name": "excelerate_connect",
+    "name": "Excelerate Connect",
+    "short_name": "Excelerate",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#F5F7FB",
+    "theme_color": "#1756A9",
+    "description": "A local Flutter prototype for learner program discovery and simulated form interactions.",
     "prefer_related_applications": false,
     "icons": [
         {

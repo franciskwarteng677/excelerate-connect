@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:excelerate_connect/data/sample_programs.dart';
 import 'package:excelerate_connect/main.dart';
+import 'package:excelerate_connect/models/program.dart';
+import 'package:excelerate_connect/services/program_repository.dart';
 
 import 'support/fake_program_repository.dart';
 
 void main() {
+  late List<Program> bundledPrograms;
+
+  setUpAll(() async {
+    bundledPrograms = await AssetProgramRepository(
+      loadDelay: Duration.zero,
+    ).loadPrograms();
+  });
+
   Future<void> pumpApp(WidgetTester tester) {
     return tester.pumpWidget(
       ExcelerateConnectApp(
-        programRepository: FakeProgramRepository.immediate(samplePrograms),
+        programRepository: FakeProgramRepository.immediate(bundledPrograms),
       ),
     );
   }

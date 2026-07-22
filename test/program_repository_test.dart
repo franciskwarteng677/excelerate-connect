@@ -140,6 +140,31 @@ void main() {
       expect(await repository.loadPrograms(), isEmpty);
     });
 
+    test('rejects duplicate program identifiers', () async {
+      final duplicate = _validProgramJson()
+        ..['title'] = 'Duplicate Flutter Foundations';
+      final repository = AssetProgramRepository(
+        assetBundle: _StringAssetBundle({
+          AssetProgramRepository.defaultAssetPath: jsonEncode([
+            _validProgramJson(),
+            duplicate,
+          ]),
+        }),
+        loadDelay: Duration.zero,
+      );
+
+      await expectLater(
+        repository.loadPrograms(),
+        throwsA(
+          isA<ProgramRepositoryException>().having(
+            (error) => error.cause.toString(),
+            'cause',
+            contains('Duplicate program id "flutter-foundations"'),
+          ),
+        ),
+      );
+    });
+
     test('wraps a malformed catalogue root in a clear domain error', () async {
       final repository = AssetProgramRepository(
         assetBundle: _StringAssetBundle({

@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:excelerate_connect/data/sample_programs.dart';
 import 'package:excelerate_connect/main.dart';
 import 'package:excelerate_connect/models/program.dart';
+import 'package:excelerate_connect/screens/home_screen.dart';
 import 'package:excelerate_connect/screens/program_listing_screen.dart';
 import 'package:excelerate_connect/services/program_repository.dart';
 import 'package:excelerate_connect/theme/app_theme.dart';
@@ -57,6 +58,18 @@ void main() {
     );
   }
 
+  Future<void> pumpHome(
+    WidgetTester tester,
+    ProgramRepository programRepository,
+  ) {
+    return tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: HomeScreen(programRepository: programRepository),
+      ),
+    );
+  }
+
   EditableText searchInput(WidgetTester tester) {
     return tester.widget<EditableText>(
       find.descendant(
@@ -83,6 +96,83 @@ void main() {
 
     expect(find.byKey(const ValueKey('programLoadingState')), findsNothing);
     expect(find.text('4 sample programs'), findsOneWidget);
+  });
+
+  testWidgets('Home shows loading before successful featured programs', (
+    tester,
+  ) async {
+    final completer = Completer<List<Program>>();
+    final repository = FakeProgramRepository(() => completer.future);
+
+    await pumpHome(tester, repository);
+    await tester.pump();
+
+    expect(
+      find.byKey(const ValueKey('homeProgramsLoadingState')),
+      findsOneWidget,
+    );
+
+    completer.complete(samplePrograms);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey('homeProgramsLoadingState')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey('programCard-flutter-foundations')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('programCard-career-readiness-sprint')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Home reports a source-empty featured catalogue', (tester) async {
+    await pumpHome(tester, FakeProgramRepository.immediate(const <Program>[]));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey('homeProgramsEmptyState')),
+      findsOneWidget,
+    );
+    expect(find.text('No featured programs'), findsOneWidget);
+  });
+
+  testWidgets('Home featured-program error retries and recovers', (
+    tester,
+  ) async {
+    var attempts = 0;
+    final repository = FakeProgramRepository(() async {
+      attempts++;
+      if (attempts == 1) {
+        throw StateError('Simulated local asset failure');
+      }
+      return samplePrograms;
+    });
+
+    await pumpHome(tester, repository);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey('homeProgramsErrorState')),
+      findsOneWidget,
+    );
+    expect(attempts, 1);
+
+    final retryButton = find.byKey(const ValueKey('homeProgramsRetryButton'));
+    await tester.ensureVisible(retryButton);
+    await tester.pumpAndSettle();
+    await tester.tap(retryButton);
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('homeProgramsErrorState')), findsNothing);
+    expect(
+      find.byKey(const ValueKey('programCard-flutter-foundations')),
+      findsOneWidget,
+    );
+    expect(attempts, 2);
   });
 
   testWidgets('Program Listing reports a source-empty catalogue', (
@@ -394,6 +484,12 @@ void main() {
     expect(find.byKey(const ValueKey('feedbackFormScreen')), findsOneWidget);
     expect(find.text('Flutter Foundations'), findsOneWidget);
     expect(find.textContaining('no feedback service'), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('programDetailsScreen')), findsOneWidget);
+    expect(find.byKey(const ValueKey('feedbackFormScreen')), findsNothing);
   });
 
   testWidgets('Home search opens Programs and bottom Home returns Home', (

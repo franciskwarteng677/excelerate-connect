@@ -84,6 +84,16 @@ void main() {
     await tester.pump();
   }
 
+  Future<void> toggleRegistrationAgreement(WidgetTester tester) async {
+    final tile = find.byKey(const ValueKey('registrationAgreementCheckbox'));
+    await tester.ensureVisible(tile);
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.descendant(of: tile, matching: find.byType(Checkbox)),
+    );
+    await tester.pump();
+  }
+
   testWidgets('registration form validates required, format, and length', (
     tester,
   ) async {
@@ -99,11 +109,21 @@ void main() {
       find.text('Confirm that you understand this is a local prototype.'),
       findsOneWidget,
     );
+    expect(
+      find.text('Please correct the highlighted registration fields.'),
+      findsOneWidget,
+    );
+    ScaffoldMessenger.of(
+      tester.element(find.byType(Scaffold)),
+    ).removeCurrentSnackBar();
+    await tester.pumpAndSettle();
 
     await tester.enterText(
       find.byKey(const ValueKey('registrationFullNameField')),
       'Francis Kwarteng',
     );
+    await tester.pump();
+    expect(find.text('Enter your full name.'), findsNothing);
     await tester.enterText(
       find.byKey(const ValueKey('registrationEmailField')),
       'invalid-email',
@@ -113,11 +133,16 @@ void main() {
       'registrationEducationField',
       'Undergraduate',
     );
+    expect(find.text('Select your education level.'), findsNothing);
     await tester.enterText(
       find.byKey(const ValueKey('registrationMotivationField')),
       'Too short',
     );
-    await tapVisible(tester, 'registrationAgreementCheckbox');
+    await toggleRegistrationAgreement(tester);
+    expect(
+      find.text('Confirm that you understand this is a local prototype.'),
+      findsNothing,
+    );
     await tapVisible(tester, 'registrationSubmitButton');
 
     expect(find.text('Enter a valid email address.'), findsOneWidget);
@@ -153,7 +178,7 @@ void main() {
       find.byKey(const ValueKey('registrationMotivationField')),
       'I want to strengthen my Flutter development skills.',
     );
-    await tapVisible(tester, 'registrationAgreementCheckbox');
+    await toggleRegistrationAgreement(tester);
     await tapVisible(tester, 'registrationSubmitButton');
     await tester.pumpAndSettle();
 
@@ -212,7 +237,7 @@ void main() {
       find.byKey(const ValueKey('registrationMotivationField')),
       'I want to strengthen my Flutter development skills.',
     );
-    await tapVisible(tester, 'registrationAgreementCheckbox');
+    await toggleRegistrationAgreement(tester);
     await tapVisible(tester, 'registrationSubmitButton');
 
     expect(
@@ -246,16 +271,27 @@ void main() {
     expect(find.text('Enter your email address.'), findsOneWidget);
     expect(find.text('Select an experience rating.'), findsOneWidget);
     expect(find.text('Enter your feedback comments.'), findsOneWidget);
+    expect(
+      find.text('Please correct the highlighted feedback fields.'),
+      findsOneWidget,
+    );
+    ScaffoldMessenger.of(
+      tester.element(find.byType(Scaffold)),
+    ).removeCurrentSnackBar();
+    await tester.pumpAndSettle();
 
     await tester.enterText(
       find.byKey(const ValueKey('feedbackFullNameField')),
       'Francis Kwarteng',
     );
+    await tester.pump();
+    expect(find.text('Enter your full name.'), findsNothing);
     await tester.enterText(
       find.byKey(const ValueKey('feedbackEmailField')),
       'invalid-email',
     );
     await selectDropdownOption(tester, 'feedbackRatingField', 'Good');
+    expect(find.text('Select an experience rating.'), findsNothing);
     await tester.enterText(
       find.byKey(const ValueKey('feedbackCommentsField')),
       'Too short',

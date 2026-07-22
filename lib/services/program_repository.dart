@@ -39,6 +39,7 @@ class AssetProgramRepository implements ProgramRepository {
       }
 
       final programs = <Program>[];
+      final programIds = <String>{};
       for (var index = 0; index < decoded.length; index++) {
         final entry = decoded[index];
         if (entry is! Map<String, dynamic>) {
@@ -48,7 +49,13 @@ class AssetProgramRepository implements ProgramRepository {
         }
 
         try {
-          programs.add(Program.fromJson(entry));
+          final program = Program.fromJson(entry);
+          if (!programIds.add(program.id)) {
+            throw FormatException(
+              'Duplicate program id "${program.id}" at index $index.',
+            );
+          }
+          programs.add(program);
         } on FormatException catch (error) {
           throw FormatException(
             'Invalid program entry at index $index: $error',

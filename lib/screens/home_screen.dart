@@ -448,7 +448,6 @@ class _EventTile extends StatelessWidget {
       ),
       title: Text(title),
       subtitle: Text(detail),
-      trailing: const Icon(Icons.chevron_right_rounded),
     );
   }
 }

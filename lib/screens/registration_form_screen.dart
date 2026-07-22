@@ -76,12 +76,38 @@ class _RegistrationFormScreenState extends State<RegistrationFormScreen> {
     return null;
   }
 
+  void _showValidationFailure() {
+    final messenger = ScaffoldMessenger.of(context);
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        const SnackBar(
+          content: Text('Please correct the highlighted registration fields.'),
+        ),
+      );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final formContext = _formKey.currentContext;
+      if (formContext == null) return;
+      Scrollable.ensureVisible(
+        formContext,
+        alignment: 0.05,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
   Future<void> _submit() async {
     if (_isSubmitting) return;
 
     FocusManager.instance.primaryFocus?.unfocus();
     setState(() => _showSuccess = false);
-    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      _showValidationFailure();
+      return;
+    }
 
     setState(() => _isSubmitting = true);
     await Future<void>.delayed(widget.submissionDelay);
@@ -162,6 +188,8 @@ class _RegistrationFormScreenState extends State<RegistrationFormScreen> {
                         padding: const EdgeInsets.all(20),
                         child: Form(
                           key: _formKey,
+                          autovalidateMode:
+                              AutovalidateMode.onUserInteractionIfError,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
@@ -428,23 +456,31 @@ class _RegistrationSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    return Card(
-      key: const ValueKey('registrationSuccessPanel'),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(Icons.check_circle_rounded, color: colors.secondary, size: 30),
-            const SizedBox(width: 14),
-            const Expanded(
-              child: Text(
-                'Prototype registration complete. The form has been cleared. '
-                'No registration was sent to a server, and no submitted data '
-                'was saved persistently.',
+    return Semantics(
+      container: true,
+      liveRegion: true,
+      child: Card(
+        key: const ValueKey('registrationSuccessPanel'),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.check_circle_rounded,
+                color: colors.secondary,
+                size: 30,
               ),
-            ),
-          ],
+              const SizedBox(width: 14),
+              const Expanded(
+                child: Text(
+                  'Prototype registration complete. The form has been cleared. '
+                  'No registration was sent to a server, and no submitted data '
+                  'was saved persistently.',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
